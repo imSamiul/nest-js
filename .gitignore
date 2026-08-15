@@ -1,0 +1,41 @@
+# Dependencies (all nested projects)
+node_modules/
+
+# Nest / TS build
+dist/
+build/
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Temp / runtime
+.temp/
+.tmp/
+*.pid
+*.seed
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
