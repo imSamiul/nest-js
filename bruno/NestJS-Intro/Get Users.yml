@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{API_URL}}/users"
+  url: '{{API_URL}}/users'
   auth: inherit
 
 settings:
@@ -13,3 +13,29 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+
+docs: |-
+  # GET /users
+
+  Returns a static list of users.
+
+  ## Controller Mapping
+  - Method: GET
+  - Route: /users
+  - Handler: getUsers()
+
+  ## Inputs
+  - Path params: none
+  - Query params: none
+  - Body: none
+
+  ## Response Shape
+  - Array of user objects
+  - Example:
+    [
+      { "id": 1, "name": "John Doe" },
+      { "id": 2, "name": "Jane Smith" }
+    ]
+
+  ## Console Output
+  - Logs users list from the handler before returning response.

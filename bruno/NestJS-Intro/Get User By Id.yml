@@ -1,0 +1,51 @@
+info:
+  name: Get User By Id
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: '{{API_URL}}/users/123?name=Samiul&age=28'
+  params:
+    - name: name
+      value: Samiul
+      type: query
+    - name: age
+      value: '28'
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # GET /users/:id
+
+  Returns a text response combining path param and query params.
+
+  ## Controller Mapping
+  - Method: GET
+  - Route: /users/:id
+  - Handler: getUserByIdWithQueryParams(@Param('id'), @Query('name'), @Query('age'))
+
+  ## Inputs
+  - Path params:
+    - id: required (example: 123)
+  - Query params:
+    - name: optional in controller typing (example: Samiul)
+    - age: optional in controller typing (example: 28)
+  - Body: none
+
+  ## Specific Key Extraction
+  - @Param('id') gets single path value
+  - @Query('name') gets single query value
+  - @Query('age') gets single query value
+
+  ## Response
+  - Plain string including id, name, and age.
+
+  ## Console Output
+  - Logs object with id, name, age.

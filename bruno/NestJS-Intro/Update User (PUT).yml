@@ -1,0 +1,65 @@
+info:
+  name: Update User (PUT)
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: '{{API_URL}}/users/123?notify=true'
+  params:
+    - name: notify
+      value: 'true'
+      type: query
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Updated Name",
+        "email": "updated@test.com",
+        "age": 30
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # PUT /users/:id
+
+  Replaces a user and demonstrates full + specific key extraction from params, query, and body.
+
+  ## Controller Mapping
+  - Method: PUT
+  - Route: /users/:id
+  - Handler: updateUser(
+      @Param() params,
+      @Param('id') id,
+      @Query('notify') notify,
+      @Body() body,
+      @Body('name') name
+    )
+
+  ## Inputs
+  - Path params:
+    - id: required
+  - Query params:
+    - notify: optional (example: true)
+  - Body:
+    - Full body object
+    - Specific body key: name
+
+  ## Extraction Pattern
+  - Full params object: @Param()
+  - Specific param key: @Param('id')
+  - Specific query key: @Query('notify')
+  - Full body object: @Body()
+  - Specific body key: @Body('name')
+
+  ## Response
+  - JSON object with action, message, params, id, notify, body, name.
+
+  ## Console Output
+  - Logs full params/query/body and specific key values.

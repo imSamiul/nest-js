@@ -1,0 +1,57 @@
+info:
+  name: Create Users
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: '{{API_URL}}/users'
+  body:
+    type: json
+    data: |-
+      {
+        "name": "test",
+        "email": "test@test.com",
+        "age": 28,
+        "password": "Test@1234"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # POST /users
+
+  Creates a user payload example and returns body, headers, and requester IP as text.
+
+  ## Controller Mapping
+  - Method: POST
+  - Route: /users
+  - Handler: createUsers(@Body(), @Headers(), @Ip())
+
+  ## Inputs
+  - Path params: none
+  - Query params: none
+  - Body: JSON object
+
+  ## Body Example
+  {
+    "name": "test",
+    "email": "test@test.com",
+    "age": 28,
+    "password": "Test@1234"
+  }
+
+  ## Specific Key From Body
+  - This handler currently reads full body using @Body().
+  - If needed, you can also read a single key with @Body('name').
+
+  ## Response
+  - Plain string containing serialized body, headers, and IP.
+
+  ## Console Output
+  - Logs body, headers, ip object.

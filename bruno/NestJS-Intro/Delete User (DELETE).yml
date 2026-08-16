@@ -1,0 +1,53 @@
+info:
+  name: Delete User (DELETE)
+  type: http
+  seq: 7
+
+http:
+  method: DELETE
+  url: '{{API_URL}}/users/123?reason=cleanup'
+  params:
+    - name: reason
+      value: cleanup
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # DELETE /users/:id
+
+  Deletes a user and demonstrates params + query extraction.
+
+  ## Controller Mapping
+  - Method: DELETE
+  - Route: /users/:id
+  - Handler: deleteUser(
+      @Param() params,
+      @Param('id') id,
+      @Query() query,
+      @Query('reason') reason
+    )
+
+  ## Inputs
+  - Path params:
+    - id: required
+  - Query params:
+    - reason: optional (example: cleanup)
+  - Body: none
+
+  ## Extraction Pattern
+  - Full params object: @Param()
+  - Specific param key: @Param('id')
+  - Full query object: @Query()
+  - Specific query key: @Query('reason')
+
+  ## Response
+  - JSON object with action, message, params, id, query, reason.
+
+  ## Console Output
+  - Logs full params/query and reason.

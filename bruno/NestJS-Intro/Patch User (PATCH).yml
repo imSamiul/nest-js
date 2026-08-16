@@ -1,0 +1,65 @@
+info:
+  name: Patch User (PATCH)
+  type: http
+  seq: 6
+
+http:
+  method: PATCH
+  url: '{{API_URL}}/users/123?track=yes'
+  params:
+    - name: track
+      value: yes
+      type: query
+  body:
+    type: json
+    data: |-
+      {
+        "email": "patched@test.com"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # PATCH /users/:id
+
+  Partially updates a user and demonstrates query full object + specific key, body full object + specific key.
+
+  ## Controller Mapping
+  - Method: PATCH
+  - Route: /users/:id
+  - Handler: patchUser(
+      @Param() params,
+      @Param('id') id,
+      @Query() query,
+      @Query('track') track,
+      @Body() body,
+      @Body('email') email
+    )
+
+  ## Inputs
+  - Path params:
+    - id: required
+  - Query params:
+    - track: optional (example: yes)
+  - Body:
+    - Full body object
+    - Specific body key: email
+
+  ## Extraction Pattern
+  - Full params object: @Param()
+  - Specific param key: @Param('id')
+  - Full query object: @Query()
+  - Specific query key: @Query('track')
+  - Full body object: @Body()
+  - Specific body key: @Body('email')
+
+  ## Response
+  - JSON object with action, message, params, id, query, track, body, email.
+
+  ## Console Output
+  - Logs full params/query/body and specific key values.
