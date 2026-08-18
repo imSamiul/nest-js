@@ -1,0 +1,7 @@
+info:
+  name: 03-validation-and-pipes
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit

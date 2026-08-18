@@ -5,7 +5,7 @@ info:
 
 http:
   method: DELETE
-  url: '{{API_URL}}/users/123?reason=cleanup'
+  url: "{{API_URL}}/users/123?reason=cleanup"
   params:
     - name: reason
       value: cleanup

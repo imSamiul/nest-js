@@ -5,10 +5,10 @@ info:
 
 http:
   method: PUT
-  url: '{{API_URL}}/users/123?notify=true'
+  url: "{{API_URL}}/users/123?notify=true"
   params:
     - name: notify
-      value: 'true'
+      value: "true"
       type: query
   body:
     type: json
