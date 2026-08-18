@@ -1,11 +1,14 @@
 import {
+  Body,
   Controller,
   DefaultValuePipe,
   Get,
   Param,
   ParseIntPipe,
+  Post,
   Query,
 } from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user.dtos';
 
 @Controller('users')
 export class UsersController {
@@ -63,23 +66,13 @@ export class UsersController {
     return response;
   }
 
-  // @Post()
-  // public createUsers(
-  //   @Body() body: Record<string, unknown>,
-  //   @Headers() headers: Record<string, string | string[] | undefined>,
-  //   @Ip() ip: string,
-  // ) {
-  //   const response =
-  //     'This is body: ' +
-  //     JSON.stringify(body) +
-  //     ' and these are headers: ' +
-  //     JSON.stringify(headers) +
-  //     ' and this is the IP: ' +
-  //     ip;
+  @Post()
+  public createUsers(@Body() createUserDto: CreateUserDto) {
+    const response = 'This is body: ' + JSON.stringify(createUserDto);
 
-  //   console.log('[POST /users] Body, headers and IP:', { body, headers, ip });
-  //   return response;
-  // }
+    console.log('[POST /users] Body:', { createUserDto });
+    return response;
+  }
 
   // @Put(':id')
   // public updateUser(
