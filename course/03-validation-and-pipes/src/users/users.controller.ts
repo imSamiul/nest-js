@@ -5,10 +5,13 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateUserDto } from './dtos/create-user.dtos';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { GetUsersParamDto } from './dtos/get-users-params.dto';
+import { PatchUserDto } from './dtos/patch-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -25,7 +28,7 @@ export class UsersController {
 
   @Get(':id')
   public getUserByIdWithQueryParams(
-    @Param('id', ParseIntPipe) id: number | undefined,
+    @Param() params: GetUsersParamDto,
     @Query('name') name?: string,
     @Query('age') age?: string,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit?: number,
@@ -33,7 +36,7 @@ export class UsersController {
   ) {
     const response =
       'Your user id is: ' +
-      id +
+      params.id +
       ', your name is: ' +
       name +
       ', and your age is: ' +
@@ -43,9 +46,15 @@ export class UsersController {
       ', Page: ' +
       page;
 
-    console.log(typeof id, typeof name, typeof age, typeof limit, typeof page);
+    console.log(
+      typeof params.id,
+      typeof name,
+      typeof age,
+      typeof limit,
+      typeof page,
+    );
     console.log('[GET /users/:id] Params and query:', {
-      id,
+      id: params.id,
       name,
       age,
       limit,
@@ -74,6 +83,31 @@ export class UsersController {
     return response;
   }
 
+  @Patch(':id')
+  public patchUser(
+    @Param() params: GetUsersParamDto,
+    @Query() query: Record<string, string>,
+    @Body() patchUserDto: PatchUserDto,
+    @Query('track') track?: string,
+  ) {
+    const response = {
+      action: 'patch',
+      message: 'User partially updated',
+      params,
+      query,
+      track,
+      body: patchUserDto,
+    };
+
+    console.log('[PATCH /users/:id] Full params/query/body and specific key:', {
+      params,
+      query,
+      track,
+      body: patchUserDto,
+    });
+    return response;
+  }
+
   // @Put(':id')
   // public updateUser(
   //   @Param() params: Record<string, string>,
@@ -98,37 +132,6 @@ export class UsersController {
   //     notify,
   //     body,
   //     name,
-  //   });
-  //   return response;
-  // }
-
-  // @Patch(':id')
-  // public patchUser(
-  //   @Param() params: Record<string, string>,
-  //   @Param('id') id: string,
-  //   @Query() query: Record<string, string>,
-  //   @Query('track') track?: string,
-  //   @Body() body?: Record<string, unknown>,
-  //   @Body('email') email?: string,
-  // ) {
-  //   const response = {
-  //     action: 'patch',
-  //     message: 'User partially updated',
-  //     params,
-  //     id,
-  //     query,
-  //     track,
-  //     body,
-  //     email,
-  //   };
-
-  //   console.log('[PATCH /users/:id] Full params/query/body and specific key:', {
-  //     params,
-  //     id,
-  //     query,
-  //     track,
-  //     body,
-  //     email,
   //   });
   //   return response;
   // }

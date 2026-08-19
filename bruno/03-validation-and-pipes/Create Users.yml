@@ -12,10 +12,9 @@ http:
       {
         "name": "test",
         "email": "test@test.com",
-        "age": "28",
+        "age": 28,
         "userName": "imSamiul",
         "password": "Test@1234"
-      //   "isAuthenticated": true
       }
   auth: inherit
 
@@ -28,12 +27,12 @@ settings:
 docs: |-
   # POST /users
 
-  Creates a user payload example and returns body, headers, and requester IP as text.
+  Validates a user payload and returns the serialized body as text.
 
   ## Controller Mapping
   - Method: POST
   - Route: /users
-  - Handler: createUsers(@Body(), @Headers(), @Ip())
+  - Handler: createUsers(@Body() createUserDto)
 
   ## Inputs
   - Path params: none
@@ -48,12 +47,16 @@ docs: |-
     "password": "Test@1234"
   }
 
-  ## Specific Key From Body
-  - This handler currently reads full body using @Body().
-  - If needed, you can also read a single key with @Body('name').
-
   ## Response
-  - Plain string containing serialized body, headers, and IP.
+  - Plain string containing the serialized body.
 
   ## Console Output
-  - Logs body, headers, ip object.
+  - Logs the validated createUserDto object.
+
+  ## Validation
+  - name: required string, 4-20 characters
+  - email: required valid email
+  - age: required number
+  - userName: optional string
+  - password: required, at least 8 characters with uppercase, lowercase, number, and special character
+  - Unknown properties are rejected by the global validation pipe.

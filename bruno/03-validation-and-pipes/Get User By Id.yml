@@ -35,7 +35,7 @@ docs: |-
   ## Controller Mapping
   - Method: GET
   - Route: /users/:id
-  - Handler: getUserByIdWithQueryParams(@Param('id'), @Query('name'), @Query('age'))
+  - Handler: getUserByIdWithQueryParams(@Param(), @Query('name'), @Query('age'), @Query('limit'), @Query('page'))
 
   ## Inputs
   - Path params:
@@ -43,10 +43,12 @@ docs: |-
   - Query params:
     - name: optional in controller typing (example: Samiul)
     - age: optional in controller typing (example: 28)
+    - limit: optional integer, defaults to 10
+    - page: optional integer, defaults to 1
   - Body: none
 
   ## Specific Key Extraction
-  - @Param('id') gets single path value
+  - @Param() is validated and transformed by GetUsersParamDto
   - @Query('name') gets single query value
   - @Query('age') gets single query value
 

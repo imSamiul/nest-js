@@ -1,0 +1,33 @@
+info:
+  name: Get Users
+  type: http
+  seq: 0
+
+http:
+  method: GET
+  url: "{{API_URL}}/users"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # GET /users
+
+  Returns the in-memory users list.
+
+  ## Controller Mapping
+  - Method: GET
+  - Route: /users
+  - Handler: getUsers()
+
+  ## Inputs
+  - Path params: none
+  - Query params: none
+  - Body: none
+
+  ## Response
+  - JSON array containing users with `id` and `name` fields.

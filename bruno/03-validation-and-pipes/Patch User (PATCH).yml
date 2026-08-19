@@ -1,0 +1,62 @@
+info:
+  name: Patch User (PATCH)
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: "{{API_URL}}/users/123?track=yes"
+  params:
+    - name: track
+      value: yes
+      type: query
+  body:
+    type: json
+    data: |-
+      {
+        "email": "patched@test.com"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # PATCH /users/:id
+
+  Partially updates a user and demonstrates validation of a PATCH body with optional DTO fields.
+
+  ## Controller Mapping
+  - Method: PATCH
+  - Route: /users/:id
+  - Handler: patchUser(@Param() params, @Query() query, @Body() patchUserDto, @Query('track') track)
+
+  ## Inputs
+  - Path params:
+    - id: required
+  - Query params:
+    - track: optional (example: yes)
+  - Body:
+    - Partial PatchUserDto object
+
+  ## Extraction Pattern
+  - Full params object: @Param()
+  - Path params are validated through GetUsersParamDto
+  - Full query object: @Query()
+  - Specific query key: @Query('track')
+  - Full body object: @Body()
+  - Patch body is validated through PatchUserDto
+
+  ## Response
+  - JSON object with action, message, params, query, track, and body.
+
+  ## Console Output
+  - Logs full params/query/body values.
+
+  ## Validation
+  - All CreateUserDto fields are optional for PATCH.
+  - `email` must be a valid email when provided.
+  - Unknown properties are rejected by the global validation pipe.
