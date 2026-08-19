@@ -5,19 +5,19 @@ info:
 
 http:
   method: GET
-  url: "{{API_URL}}/users/123?name=Samiul&age=28&page=12&limit=13"
+  url: '{{API_URL}}/users/123?name=Samiul&age=28&page=12&limit=13'
   params:
     - name: name
       value: Samiul
       type: query
     - name: age
-      value: "28"
+      value: '28'
       type: query
     - name: page
-      value: "12"
+      value: '12'
       type: query
     - name: limit
-      value: "13"
+      value: '13'
       type: query
   auth: inherit
 

@@ -5,7 +5,7 @@ info:
 
 http:
   method: PATCH
-  url: "{{API_URL}}/users/123?track=yes"
+  url: '{{API_URL}}/users/123?track=yes'
   params:
     - name: track
       value: yes
