@@ -5,3 +5,49 @@ info:
 
 request:
   auth: inherit
+
+docs: |-
+  # 03 — Validation and Pipes
+
+  Maps to `course/03-validation-and-pipes`. Select the **nestjs** environment (`API_URL` = `http://localhost:3000`) and start that app before sending requests.
+
+  ```bash
+  cd course/03-validation-and-pipes
+  pnpm start:dev
+  ```
+
+  PUT and DELETE from the previous module are commented out in this controller. This folder only covers the live routes.
+
+  ## Global ValidationPipe
+
+  Registered in `src/main.ts` for every HTTP request:
+
+  | Option | Value | Effect |
+  |---|---|---|
+  | `whitelist` | `true` | Drops properties that have no decorator on the DTO |
+  | `forbidNonWhitelisted` | `true` | Returns **400** if any extra property is sent |
+  | `transform` | `true` | Turns the payload into a DTO class instance and enables `@Type()` |
+
+  Failed `class-validator` checks also return **400** with an `message` array.
+
+  ## DTOs
+
+  - **CreateUserDto** — POST `/users` body
+  - **PatchUserDto** — `PartialType(CreateUserDto)`; every field optional, same rules if present
+  - **GetUsersParamDto** — path `id` as integer (`@Type(() => Number)` + `@IsInt()`)
+
+  ## Pipes on routes
+
+  - `ParseIntPipe` — `GET /users/:id/:optional` (`id`), and query `limit` / `page`
+  - `DefaultValuePipe(10)` / `DefaultValuePipe(1)` — `limit` and `page` when omitted
+
+  ## Live routes
+
+  | Method | Path | What to test |
+  |---|---|---|
+  | GET | `/` | App hello (not under `/users`) |
+  | GET | `/users` | Static list |
+  | GET | `/users/:id` | Param DTO + query pipes |
+  | GET | `/users/:id/:optional` | `ParseIntPipe` on `id` |
+  | POST | `/users` | CreateUserDto |
+  | PATCH | `/users/:id` | PatchUserDto (partial) |

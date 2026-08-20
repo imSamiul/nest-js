@@ -1,0 +1,40 @@
+info:
+  name: Create Users Unknown Property
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: '{{API_URL}}/users'
+  body:
+    type: json
+    data: |-
+      {
+        "name": "test",
+        "email": "test@test.com",
+        "age": 28,
+        "userName": "imSamiul",
+        "password": "Test@1234",
+        "role": "admin"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # POST /users — forbidNonWhitelisted
+
+  Same valid user as **Create Users**, plus `role`. `role` has no decorator on `CreateUserDto`.
+
+  With `forbidNonWhitelisted: true`, Nest returns **400** instead of stripping the field (`whitelist` alone would strip it silently).
+
+  ## Expected
+  - Status: 400
+  - Message includes that property `role` should not exist
+
+  ## Compare
+  Send the same body without `role` → **201** (see **Create Users**).

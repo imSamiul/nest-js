@@ -1,7 +1,7 @@
 info:
   name: Patch User (PATCH)
   type: http
-  seq: 4
+  seq: 9
 
 http:
   method: PATCH
@@ -27,36 +27,34 @@ settings:
 docs: |-
   # PATCH /users/:id
 
-  Partially updates a user and demonstrates validation of a PATCH body with optional DTO fields.
+  Partial update. `PatchUserDto` is `PartialType(CreateUserDto)`: every create field is optional, but a present field must still pass its validators.
 
-  ## Controller Mapping
+  ## Mapping
   - Method: PATCH
-  - Route: /users/:id
-  - Handler: patchUser(@Param() params, @Query() query, @Body() patchUserDto, @Query('track') track)
+  - Route: `/users/:id`
+  - Handler: `patchUser(@Param() params, @Query() query, @Body() patchUserDto, @Query('track') track)`
 
-  ## Inputs
-  - Path params:
-    - id: required
-  - Query params:
-    - track: optional (example: yes)
-  - Body:
-    - Partial PatchUserDto object
+  ## Path
+  - `id` via `GetUsersParamDto` (`@IsInt()`, transformed to number)
 
-  ## Extraction Pattern
-  - Full params object: @Param()
-  - Path params are validated through GetUsersParamDto
-  - Full query object: @Query()
-  - Specific query key: @Query('track')
-  - Full body object: @Body()
-  - Patch body is validated through PatchUserDto
+  ## Query
+  - Full object: `@Query()`
+  - `track`: optional; this request sends `yes`
 
-  ## Response
-  - JSON object with action, message, params, query, track, and body.
+  ## Body (`PatchUserDto`)
+  Only `email` is sent. `name`, `age`, `password`, `userName` may be omitted. Extra keys → **400**.
 
-  ## Console Output
-  - Logs full params/query/body values.
+  ## Success
+  - Status: 200
+  - JSON:
 
-  ## Validation
-  - All CreateUserDto fields are optional for PATCH.
-  - `email` must be a valid email when provided.
-  - Unknown properties are rejected by the global validation pipe.
+  ```json
+  {
+    "action": "patch",
+    "message": "User partially updated",
+    "params": { "id": 123 },
+    "query": { "track": "yes" },
+    "track": "yes",
+    "body": { "email": "patched@test.com" }
+  }
+  ```

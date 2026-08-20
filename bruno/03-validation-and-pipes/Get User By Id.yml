@@ -1,7 +1,7 @@
 info:
   name: Get User By Id
   type: http
-  seq: 1
+  seq: 2
 
 http:
   method: GET
@@ -30,30 +30,29 @@ settings:
 docs: |-
   # GET /users/:id
 
-  Returns a text response combining path param and query params.
+  Combines a validated path `id` with query fields. `name` and `age` are plain query strings (not DTO-validated). `limit` and `page` go through `ParseIntPipe`.
 
-  ## Controller Mapping
+  ## Mapping
   - Method: GET
-  - Route: /users/:id
-  - Handler: getUserByIdWithQueryParams(@Param(), @Query('name'), @Query('age'), @Query('limit'), @Query('page'))
+  - Route: `/users/:id`
+  - Handler: `getUserByIdWithQueryParams`
 
-  ## Inputs
-  - Path params:
-    - id: required (example: 123)
-  - Query params:
-    - name: optional in controller typing (example: Samiul)
-    - age: optional in controller typing (example: 28)
-    - limit: optional integer, defaults to 10
-    - page: optional integer, defaults to 1
-  - Body: none
+  ## Path
+  | Param | Pipe / DTO | Rules |
+  |---|---|---|
+  | `id` | `GetUsersParamDto` | Optional on the DTO, required by this route. `@Type(() => Number)` + `@IsInt()`. Non-integers → **400**. |
 
-  ## Specific Key Extraction
-  - @Param() is validated and transformed by GetUsersParamDto
-  - @Query('name') gets single query value
-  - @Query('age') gets single query value
+  ## Query
+  | Param | Pipe | Notes |
+  |---|---|---|
+  | `name` | none | Optional string |
+  | `age` | none | Optional string (not `ParseIntPipe`) |
+  | `limit` | `DefaultValuePipe(10)`, `ParseIntPipe` | Integer; default 10 |
+  | `page` | `DefaultValuePipe(1)`, `ParseIntPipe` | Integer; default 1 |
 
-  ## Response
-  - Plain string including id, name, and age.
+  ## Success (this request)
+  - Status: 200
+  - Body (text): `Your user id is: 123, your name is: Samiul, and your age is: 28. Limit: 13, Page: 12`
 
-  ## Console Output
-  - Logs object with id, name, age.
+  ## Server log
+  Types: `id` and `limit`/`page` are numbers; `name` and `age` stay strings.

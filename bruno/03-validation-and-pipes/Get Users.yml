@@ -1,7 +1,7 @@
 info:
   name: Get Users
   type: http
-  seq: 0
+  seq: 1
 
 http:
   method: GET
@@ -17,17 +17,23 @@ settings:
 docs: |-
   # GET /users
 
-  Returns the in-memory users list.
+  Returns the in-memory list. No DTO or pipe on this handler.
 
-  ## Controller Mapping
+  ## Mapping
   - Method: GET
-  - Route: /users
-  - Handler: getUsers()
+  - Route: `/users`
+  - Handler: `getUsers()`
 
   ## Inputs
-  - Path params: none
-  - Query params: none
-  - Body: none
+  None. A body or query is ignored.
 
-  ## Response
-  - JSON array containing users with `id` and `name` fields.
+  ## Success
+  - Status: 200
+  - Body:
+
+  ```json
+  [
+    { "id": 1, "name": "John Doe" },
+    { "id": 2, "name": "Jane Smith" }
+  ]
+  ```

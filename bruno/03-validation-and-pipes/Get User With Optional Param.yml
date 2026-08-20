@@ -1,11 +1,11 @@
 info:
   name: Get User With Optional Param
   type: http
-  seq: 2
+  seq: 5
 
 http:
   method: GET
-  url: "{{API_URL}}/users/123/profile"
+  url: '{{API_URL}}/users/123/profile'
   auth: inherit
 
 settings:
@@ -17,28 +17,25 @@ settings:
 docs: |-
   # GET /users/:id/:optional
 
-  Returns a text response using two path params.
+  Two path segments. `id` is converted with `ParseIntPipe` (number). `optional` is a raw string.
 
-  ## Controller Mapping
+  ## Mapping
   - Method: GET
-  - Route: /users/:id/:optional
-  - Handler: getUserByIdWithOptional(@Param('id'), @Param('optional'))
+  - Route: `/users/:id/:optional`
+  - Handler: `getUserByIdWithOptional(@Param('id', ParseIntPipe), @Param('optional'))`
 
-  ## Inputs
-  - Path params:
-    - id: required (example: 123)
-    - optional: required for this route pattern (example: profile)
-  - Query params: none
-  - Body: none
+  ## Path
+  | Param | Pipe | Rules |
+  |---|---|---|
+  | `id` | `ParseIntPipe` | Required integer. `abc` → **400**. |
+  | `optional` | none | Required for this pattern (example: `profile`). Not actually optional. |
 
-  ## Note About Optional Path Param
-  - In this current controller, :optional is not optional for this specific route pattern.
-  - Optional style usually uses two decorators on one handler:
-    - @Get(':id')
-    - @Get(':id/:optional')
+  ## Route matching
+  `/users/123` hits `GET :id`. `/users/123/profile` hits this handler. `:optional` is a second required segment, not an optional Nest param.
 
-  ## Response
-  - Plain string including id and optional param value.
+  ## Success
+  - Status: 200
+  - Body (text): `Your user id is: 123 and your optional parameter is: profile`
 
-  ## Console Output
-  - Logs id and optional.
+  ## Server log
+  `typeof id` is `number`; `typeof optional` is `string`.

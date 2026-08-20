@@ -1,0 +1,38 @@
+info:
+  name: Patch User Validation Failed
+  type: http
+  seq: 10
+
+http:
+  method: PATCH
+  url: '{{API_URL}}/users/123'
+  body:
+    type: json
+    data: |-
+      {
+        "email": "not-an-email",
+        "password": "short"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # PATCH /users/:id — invalid partial body
+
+  Expect **400**. Fields are optional on `PatchUserDto`, but values that *are* sent still use CreateUserDto rules.
+
+  | Field | Sent | Why it fails |
+  |---|---|---|
+  | `email` | `not-an-email` | `@IsEmail()` |
+  | `password` | `short` | min length 8 and complexity `@Matches` |
+
+  An empty JSON body `{}` would succeed (all fields optional). This request proves partial updates are not unvalidated.
+
+  ## Expected
+  - Status: 400
+  - `message` lists email and password constraints

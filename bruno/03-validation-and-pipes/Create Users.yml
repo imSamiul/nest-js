@@ -1,7 +1,7 @@
 info:
   name: Create Users
   type: http
-  seq: 3
+  seq: 6
 
 http:
   method: POST
@@ -27,36 +27,25 @@ settings:
 docs: |-
   # POST /users
 
-  Validates a user payload and returns the serialized body as text.
+  Valid `CreateUserDto`. Global `ValidationPipe` validates, then the handler stringifies the DTO.
 
-  ## Controller Mapping
+  ## Mapping
   - Method: POST
-  - Route: /users
-  - Handler: createUsers(@Body() createUserDto)
+  - Route: `/users`
+  - Handler: `createUsers(@Body() createUserDto: CreateUserDto)`
 
-  ## Inputs
-  - Path params: none
-  - Query params: none
-  - Body: JSON object
+  ## Body (`CreateUserDto`)
 
-  ## Body Example
-  {
-    "name": "test",
-    "email": "test@test.com",
-    "age": 28,
-    "password": "Test@1234"
-  }
+  | Field | Required | Rules |
+  |---|---|---|
+  | `name` | yes | string, not empty, min 4, max 20 |
+  | `email` | yes | valid email |
+  | `age` | yes | JSON **number** (`IsNumber`). `"28"` as a string fails. |
+  | `userName` | no | string if present |
+  | `password` | yes | min 8; at least one lowercase, uppercase, digit, and `@$!%*?&` |
 
-  ## Response
-  - Plain string containing the serialized body.
+  Extra keys → **400** (`forbidNonWhitelisted`).
 
-  ## Console Output
-  - Logs the validated createUserDto object.
-
-  ## Validation
-  - name: required string, 4-20 characters
-  - email: required valid email
-  - age: required number
-  - userName: optional string
-  - password: required, at least 8 characters with uppercase, lowercase, number, and special character
-  - Unknown properties are rejected by the global validation pipe.
+  ## Success
+  - Status: 201
+  - Body (text): `This is body: {"name":"test","email":"test@test.com","age":28,"userName":"imSamiul","password":"Test@1234"}`

@@ -1,0 +1,28 @@
+info:
+  name: Get User By Id (Default Page Limit)
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: '{{API_URL}}/users/123'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # GET /users/:id (defaults)
+
+  Same handler as **Get User By Id**, with no query string. `DefaultValuePipe` fills `limit=10` and `page=1`. `name` and `age` are `undefined` and appear as empty in the string.
+
+  ## Mapping
+  - Route: `/users/:id`
+  - Handler: `getUserByIdWithQueryParams`
+
+  ## Success
+  - Status: 200
+  - Body (text): `Your user id is: 123, your name is: undefined, and your age is: undefined. Limit: 10, Page: 1`

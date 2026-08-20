@@ -1,0 +1,44 @@
+info:
+  name: Create Users Validation Failed
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: '{{API_URL}}/users'
+  body:
+    type: json
+    data: |-
+      {
+        "name": "ab",
+        "email": "not-an-email",
+        "age": "twenty",
+        "password": "weak"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # POST /users — class-validator failures
+
+  Expect **400**. The body is built to fail several `CreateUserDto` rules at once.
+
+  | Field | Sent | Why it fails |
+  |---|---|---|
+  | `name` | `ab` | shorter than 4 (`Username must be at least 4 characters long`) |
+  | `email` | `not-an-email` | not an email |
+  | `age` | `"twenty"` | string, not a number |
+  | `password` | `weak` | too short and missing uppercase / digit / special char |
+  | `userName` | omitted | allowed (`@IsOptional`) |
+
+  ## Error shape
+  - Status: 400
+  - `message`: array of constraint strings
+  - `error`: `Bad Request`
+
+  The handler does not run; the pipe rejects the request first.

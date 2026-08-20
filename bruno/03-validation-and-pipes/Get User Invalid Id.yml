@@ -1,0 +1,36 @@
+info:
+  name: Get User Invalid Id
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: '{{API_URL}}/users/abc?limit=not-a-number'
+  params:
+    - name: limit
+      value: not-a-number
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # GET /users/:id — invalid pipes
+
+  Expect **400**. Either or both of these fail:
+
+  1. Path `abc` — `GetUsersParamDto` `@IsInt()` after `@Type(() => Number)` (`NaN` is not an int).
+  2. Query `limit=not-a-number` — `ParseIntPipe` cannot parse it.
+
+  Nest may fail on the first pipe in the chain (`ParseIntPipe` on `limit`/`page` vs param DTO), so the error body can mention `limit` or `id`.
+
+  ## Typical error
+  - Status: 400 Bad Request
+  - `statusCode`, `message`, `error`
+
+  ## Fix
+  Use an integer path id (`123`) and integer `limit` / `page`.
