@@ -1,112 +1,100 @@
-import {
-  Body,
-  Controller,
-  DefaultValuePipe,
-  Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
-import { CreateUserDto } from './dtos/create-user.dto';
+import { Controller, Get, Param } from '@nestjs/common';
 import { GetUsersParamDto } from './dtos/get-users-params.dto';
-import { PatchUserDto } from './dtos/patch-user.dto';
+import { UsersService } from './providers/users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
   @Get()
   public getUsers() {
-    const response = [
-      { id: 1, name: 'John Doe' },
-      { id: 2, name: 'Jane Smith' },
-    ];
-
-    console.log('[GET /users] Returning users list:', response);
-    return response;
+    return this.usersService.findAll();
   }
 
-  @Get(':id')
-  public getUserByIdWithQueryParams(
-    @Param() params: GetUsersParamDto,
-    @Query('name') name?: string,
-    @Query('age') age?: string,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit?: number,
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
-  ) {
-    const response =
-      'Your user id is: ' +
-      params.id +
-      ', your name is: ' +
-      name +
-      ', and your age is: ' +
-      age +
-      '. Limit: ' +
-      limit +
-      ', Page: ' +
-      page;
-
-    console.log(
-      typeof params.id,
-      typeof name,
-      typeof age,
-      typeof limit,
-      typeof page,
-    );
-    console.log('[GET /users/:id] Params and query:', {
-      id: params.id,
-      name,
-      age,
-      limit,
-      page,
-    });
-    return response;
+  public getUserByIdWithQueryParams(@Param() params: GetUsersParamDto) {
+    return this.usersService.findOneById(params.id);
   }
 
-  @Get(':id/:optional')
-  public getUserByIdWithOptional(
-    @Param('id', ParseIntPipe) id: number | undefined,
-    @Param('optional') optional: string,
-  ) {
-    const response =
-      'Your user id is: ' + id + ' and your optional parameter is: ' + optional;
-    console.log(typeof id, typeof optional);
-    console.log('[GET /users/:id/:optional] Params:', { id, optional });
-    return response;
-  }
+  // @Get(':id')
+  // public getUserByIdWithQueryParams(
+  //   @Param() params: GetUsersParamDto,
+  //   @Query('name') name?: string,
+  //   @Query('age') age?: string,
+  //   @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit?: number,
+  //   @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
+  // ) {
+  //   const response =
+  //     'Your user id is: ' +
+  //     params.id +
+  //     ', your name is: ' +
+  //     name +
+  //     ', and your age is: ' +
+  //     age +
+  //     '. Limit: ' +
+  //     limit +
+  //     ', Page: ' +
+  //     page;
 
-  @Post()
-  public createUsers(@Body() createUserDto: CreateUserDto) {
-    const response = 'This is body: ' + JSON.stringify(createUserDto);
+  //   console.log(
+  //     typeof params.id,
+  //     typeof name,
+  //     typeof age,
+  //     typeof limit,
+  //     typeof page,
+  //   );
+  //   console.log('[GET /users/:id] Params and query:', {
+  //     id: params.id,
+  //     name,
+  //     age,
+  //     limit,
+  //     page,
+  //   });
+  //   return response;
+  // }
 
-    console.log('[POST /users] Body:', { createUserDto });
-    return response;
-  }
+  // @Get(':id/:optional')
+  // public getUserByIdWithOptional(
+  //   @Param('id', ParseIntPipe) id: number | undefined,
+  //   @Param('optional') optional: string,
+  // ) {
+  //   const response =
+  //     'Your user id is: ' + id + ' and your optional parameter is: ' + optional;
+  //   console.log(typeof id, typeof optional);
+  //   console.log('[GET /users/:id/:optional] Params:', { id, optional });
+  //   return response;
+  // }
 
-  @Patch(':id')
-  public patchUser(
-    @Param() params: GetUsersParamDto,
-    @Query() query: Record<string, string>,
-    @Body() patchUserDto: PatchUserDto,
-    @Query('track') track?: string,
-  ) {
-    const response = {
-      action: 'patch',
-      message: 'User partially updated',
-      params,
-      query,
-      track,
-      body: patchUserDto,
-    };
+  // @Post()
+  // public createUsers(@Body() createUserDto: CreateUserDto) {
+  //   const response = 'This is body: ' + JSON.stringify(createUserDto);
 
-    console.log('[PATCH /users/:id] Full params/query/body and specific key:', {
-      params,
-      query,
-      track,
-      body: patchUserDto,
-    });
-    return response;
-  }
+  //   console.log('[POST /users] Body:', { createUserDto });
+  //   return response;
+  // }
+
+  // @Patch(':id')
+  // public patchUser(
+  //   @Param() params: GetUsersParamDto,
+  //   @Query() query: Record<string, string>,
+  //   @Body() patchUserDto: PatchUserDto,
+  //   @Query('track') track?: string,
+  // ) {
+  //   const response = {
+  //     action: 'patch',
+  //     message: 'User partially updated',
+  //     params,
+  //     query,
+  //     track,
+  //     body: patchUserDto,
+  //   };
+
+  //   console.log('[PATCH /users/:id] Full params/query/body and specific key:', {
+  //     params,
+  //     query,
+  //     track,
+  //     body: patchUserDto,
+  //   });
+  //   return response;
+  // }
 
   // @Put(':id')
   // public updateUser(
