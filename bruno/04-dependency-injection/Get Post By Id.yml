@@ -5,12 +5,12 @@ info:
 
 http:
   method: GET
-  url: "{{API_URL}}/posts/123"
+  url: '{{API_URL}}/posts/123'
   auth: inherit
 
 pathParams:
   - name: id
-    value: "123"
+    value: '123'
 
 settings:
   encodeUrl: true
