@@ -1,0 +1,37 @@
+info:
+  name: 04-dependency-injection
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit
+
+docs: |-
+  # 04 — Dependency Injection
+
+  Maps to `course/04-dependency-injection`. Select the **nestjs** environment (`API_URL` = `http://localhost:3000`) and start that app before sending requests.
+
+  ```bash
+  cd course/04-dependency-injection
+  pnpm start:dev
+  ```
+
+  ## What this module demonstrates
+
+  Nest resolves injectable service dependencies and passes them to controller constructors. The feature modules own their controllers and providers:
+
+  - `UsersModule` registers `UsersController` and `UsersService`.
+  - `PostsModule` registers `PostsController` and `PostsService`.
+  - `AppModule` imports both feature modules.
+  - `UsersController` and `PostsController` delegate work to their injected services.
+
+  The services return in-memory values, so no database is required.
+
+  ## Live routes
+
+  | Method | Path | Service call |
+  |---|---|---|
+  | GET | `/` | `AppService.getHello()` |
+  | GET | `/users` | `UsersService.findAll()` |
+  | GET | `/posts` | `PostsService.findAll()` |
+  | GET | `/posts/:id` | `PostsService.findOne(id)` |

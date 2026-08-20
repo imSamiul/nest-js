@@ -23,7 +23,34 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This module demonstrates NestJS dependency injection with feature modules, controllers, and injectable services. The API uses in-memory data so the dependency graph can be inspected without a database.
+
+## Dependency injection flow
+
+Nest creates the providers declared in each module and injects them into controller constructors:
+
+```text
+AppModule
+├── imports UsersModule
+│   ├── UsersController -> UsersService
+│   └── UsersService (@Injectable)
+└── imports PostsModule
+  ├── PostsController -> PostsService
+  └── PostsService (@Injectable)
+```
+
+`UsersController` delegates user operations to `UsersService`, while `PostsController` delegates post operations to `PostsService`. This keeps HTTP routing separate from the service logic and lets Nest manage provider construction.
+
+## API routes
+
+| Method | Path         | Description                                                |
+| ------ | ------------ | ---------------------------------------------------------- |
+| GET    | `/`          | Returns the application greeting through `AppService`      |
+| GET    | `/users`     | Returns users through `UsersService.findAll()`             |
+| GET    | `/posts`     | Returns the posts message through `PostsService.findAll()` |
+| GET    | `/posts/:id` | Returns a post message through `PostsService.findOne(id)`  |
+
+The matching Bruno collection is in `bruno/04-dependency-injection`.
 
 ## Project setup
 

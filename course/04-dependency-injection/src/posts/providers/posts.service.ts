@@ -3,10 +3,14 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class PostsService {
   findAll() {
-    return `This action returns all posts`;
+    return [
+      { id: '1', title: 'Post 1' },
+      { id: '2', title: 'Post 2' },
+      { id: '3', title: 'Post 3' },
+    ];
   }
-  findOne(id: string) {
-    console.log('id', id);
-    return `This action returns a #${id} post`;
+  findOne(userId: string) {
+    console.log('userId', userId);
+    return `This action returns a #${userId} post`;
   }
 }

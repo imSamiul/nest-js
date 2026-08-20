@@ -1,0 +1,36 @@
+info:
+  name: Get Users
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{API_URL}}/users"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # GET /users
+
+  Returns the in-memory users list through the injected `UsersService`.
+
+  ## Mapping
+  - Controller: `UsersController`
+  - Handler: `getUsers()`
+  - Dependency: `UsersService.findAll()`
+
+  ## Success
+  - Status: 200
+  - Body:
+
+  ```json
+  [
+    { "firstName": "John", "email": "john@doe.com" },
+    { "firstName": "Alice", "email": "alice@doe.com" }
+  ]
+  ```

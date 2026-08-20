@@ -1,0 +1,36 @@
+info:
+  name: Get Post By Id
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: "{{API_URL}}/posts/123"
+  auth: inherit
+
+pathParams:
+  - name: id
+    value: "123"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+docs: |-
+  # GET /posts/:id
+
+  Passes the route parameter to the injected `PostsService`.
+
+  ## Mapping
+  - Controller: `PostsController`
+  - Handler: `findOne(@Param('id') id)`
+  - Dependency: `PostsService.findOne(id)`
+
+  ## Inputs
+  - `id`: required path parameter; example `123`
+
+  ## Success
+  - Status: 200
+  - Body: `This action returns a #123 post`
